@@ -260,6 +260,35 @@ uv run python demo.py
 
 Полная картина от «MCP-сервер подключили» до «модель использует `echo` в ответе пользователю»:
 
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant H as Host
+    participant L as LLM API
+    participant S as MCP Server
+
+    Note over H,S: Подключение — один раз при старте host'а
+    H->>S: initialize
+    S-->>H: capabilities, protocolVersion
+    H->>S: notifications/initialized
+    H->>S: tools/list
+    S-->>H: [{echo, inputSchema, outputSchema}]
+
+    Note over U,S: На каждый запрос пользователя
+    U->>H: «Повтори 'hello, MCP'»
+    H->>L: messages + tools=[echo, …]
+    L-->>H: tool_use: echo(text="hello, MCP")
+    H->>S: tools/call echo
+    S-->>H: content: [text:"hello, MCP"]
+    H->>L: tool_result
+    L-->>H: «Повторил: hello, MCP»
+    H-->>U: «Повторил: hello, MCP»
+```
+
+Обрати внимание: `tools=[echo, …]` во второй фазе — это **тот самый** ответ на `tools/list` из первой. Host один раз при подключении собирает каталог, а дальше на каждом пользовательском запросе встраивает его в сообщение к LLM. Отсюда же расходы на контекст, про которые [§1.5 главного README](../../README.md#сколько-mcp-весит-в-контексте).
+
+Текстом — те же арки, разбитые на семь смысловых шагов:
+
 1. **Host запускает сервер.** При старте Claude Desktop (или любого другого host'а) спавнит твой `server.py` как child process, проходит handshake (шаги 1–2 из demo), зовёт `tools/list` (шаг 3). Ответ парсится.
 2. **`tools/list` превращается в function definitions для LLM.** `name` + `description` + `inputSchema` каждого tool'а напрямую ложатся в формат tool-use того API, который host использует (Anthropic Messages API, OpenAI chat.completions и т. п.). Каждый MCP tool становится «функцией», которую модель может позвать.
 3. **Эти function definitions отправляются в модель при каждом запросе.** Вот откуда берётся «MCP ест контекст» из [§ Сколько MCP весит в контексте](../../README.md#сколько-mcp-весит-в-контексте): `description` и `inputSchema` каждого tool'а встроены в системный промпт на каждый turn.

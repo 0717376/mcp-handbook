@@ -1,0 +1,11 @@
+[project]
+name = "mcp-rest-wrapper"
+version = "0.1.0"
+description = "MCP server wrapping a task REST API. Shows tool annotations and structuredContent."
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.27.0",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "httpx>=0.27.0",
+]
