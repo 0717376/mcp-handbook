@@ -1,0 +1,6 @@
+[project]
+name = "mcp-hello"
+version = "0.1.0"
+description = "Minimal FastMCP server demonstrating the MCP lifecycle"
+requires-python = ">=3.11"
+dependencies = ["mcp>=1.2.0"]
