@@ -26,3 +26,6 @@ env/
 
 # Private planning notes
 TODO.md
+
+# Interactive wire visualization (deployed at mcp.muravskiy.com)
+wire.html
