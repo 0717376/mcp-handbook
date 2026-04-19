@@ -96,12 +96,12 @@ def delete_task(task_id: str) -> str:
 
 - **Docstring** (`"""Permanently remove a task..."""`) — это `description` в `tools/list`. Его читает **LLM** как часть системного промпта. Отвечает на вопрос «**что** делает этот tool и когда его звать». Ровно как в уроке 1 с `echo`.
 - **`annotations=ToolAnnotations(...)`** — структурированные булевы флаги (`destructiveHint`, `idempotentHint` и т.д.). Их читает **host** (код приложения), а не модель. Отвечают на вопрос «**какой природы** эта операция — безопасная, разрушительная, идемпотентная, сетевая». Host использует их для UX (например, показать плашку «Точно удалить?» перед destructive-вызовом) и для логики ретраев. Не замена docstring'а, а дополнение: разные адресаты, разные задачи. Полный список флагов — в следующем разделе.
-- **`title="Delete task"`** — человекочитаемое название. В UI (Inspector, Claude Desktop) показывается вместо `delete_task`. Лежит на верхнем уровне `Tool`, а не внутри annotations.
+- **`title="Delete task"`** — человекочитаемое название. В UI (Inspector, Claude Desktop) показывается вместо `delete_task`.
 - **`-> Task`** (Pydantic-модель) → FastMCP видит это и **сам** генерирует `outputSchema` из модели и упаковывает возвращённый объект в `structuredContent`.
 
-## Tool annotations — контракт с моделью
+## Tool annotations — контракт с host'ом
 
-Это hint'ы в `tools/list`, которые host показывает LLM (и, при желании, пользователю). Их 4:
+Это hint'ы в `tools/list` для **host'а**, не для LLM. Host решает, как с ними обращаться — показывать пользователю плашки, требовать подтверждение на destructive, ретраить idempotent. Модель их сама по себе не видит: в tool-определениях, которые host передаёт в LLM-API (Anthropic Messages, OpenAI chat.completions), поля для annotations нет. Всего флагов 4:
 
 | Annotation | Что значит | На какой HTTP-глагол ложится |
 |---|---|---|
@@ -123,9 +123,11 @@ def delete_task(task_id: str) -> str:
 
 **Важное из [спеки](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2025-11-25/schema.ts):** annotations — это именно **hints**, _«not guaranteed to provide a faithful description»_. Злонамеренный сервер может объявить destructive-tool как readOnly. Поэтому host не должен принимать решение о доступе **только** по ним — они инструмент UX (показать «⚠ destructive», попросить подтверждение), а не безопасности. Модель безопасности — в `examples/12-security/`.
 
-## Что в wire
+## Что там нового по проводам бежит (wire)
 
-Один фрагмент — `delete_task` из ответа на `tools/list`. Остальные 5 tool'ов ложатся по той же структуре.
+### Каталог tool'ов в ответе на `tools/list`
+
+Вызовем `tools/list` и разберём один tool из ответа — `delete_task`. Остальные 5 tool'ов ложатся по той же структуре.
 
 ```json
 {
@@ -151,22 +153,56 @@ def delete_task(task_id: str) -> str:
 }
 ```
 
-Всё из `server.py` напрямую легло в JSON: type hints → `inputSchema`/`outputSchema`, `ToolAnnotations(...)` → `annotations`, `title=` → `Tool.title` верхнего уровня. Аннотации **декларируются один раз** в каталоге на сессию — `tools/call` их не дублирует.
+Всё из `server.py` напрямую легло в JSON: 
+- type hints → `inputSchema`/`outputSchema`
+- `ToolAnnotations(...)` → `annotations`
+- `title=` → `Tool.title` верхнего уровня. 
 
-В ответе на `tools/call` (например, `create_task`) результат приходит **в двух формах**: `content[0].text` — JSON как строка, попадает в LLM как tool_result; `structuredContent` — тот же объект типизированным JSON, используется кодом host'а (UI, next-hop, валидация) и в LLM не попадает. Плюс `isError: false` — явное «бизнес-операция успешна»; подробнее про это — в [`03-errors/`](../03-errors/).
+Аннотации **декларируются один раз** в каталоге на сессию — `tools/call` их не дублирует.
+
+### Результат в ответе на `tools/call`
+
+Теперь сам вызов. Попросим `create_task(title="write chapter 02")`:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"id\": \"850d9b66-...\",\n  \"title\": \"write chapter 02\",\n  \"done\": false,\n  \"created_at\": \"2026-04-19T09:38:49+00:00\"\n}"
+      }
+    ],
+    "structuredContent": {
+      "id": "850d9b66-...",
+      "title": "write chapter 02",
+      "done": false,
+      "created_at": "2026-04-19T09:38:49+00:00"
+    },
+    "isError": false
+  }
+}
+```
+
+Результат приходит **в двух формах**:
+- `content[0].text` — JSON как строка, попадает в LLM как tool_result.
+- `structuredContent` — тот же объект типизированным JSON, используется кодом host'а (UI, next-hop, валидация) и в LLM не попадает.
+
+Плюс `isError: false` — явное «бизнес-операция успешна»; подробнее про это — в [`03-errors/`](../03-errors/).
 
 ## В Inspector
 
-В `01-hello` Inspector был под давлением — он скрывает envelope и не показывает client→server notifications. В 02 он наоборот полезен: всё новое — annotations и structuredContent — отрисовывается нативно и читается глазами. Setup — в секции [Установка и запуск](#установка-и-запуск) выше.
+В `01-hello` Inspector мы раскритиковали — он скрывает envelope и не показывает client→server notifications. Тут же он наоборот полезен: всё новое — annotations и structuredContent — отрисовывается нативно. Setup — в секции [Установка и запуск](#установка-и-запуск) выше.
 
-Бейджи всех 4 аннотаций в панели tool'а — единственный UI, где они все видны сразу. Сплошная рамка = флаг задан явно, пунктирная и тусклая = дефолт из спеки. Дефолты асимметричные и параноидальные: `destructiveHint` и `openWorldHint` по спеке **`true`**, остальные `false`.
+Бейджи всех 4 аннотаций в панели tool'а — единственный UI, где они все видны сразу. Сплошная рамка = флаг задан явно, пунктирная и тусклая = дефолт из спеки. Дефолты асимметричные и параноидальные: `destructiveHint` и `openWorldHint` по спеке **`true`**, остальные `false`. На нашем `list_tasks` этот пунктир как раз виден — мы выставили только два флага из четырёх, и Inspector честно дорисовывает «✓ Destructive» дефолтом.
 
 ## Что попробовать
 
 1. **Убери docstring у `create_task`** — в `tools/list` исчезнет `description`. Модель перестанет понимать, чем этот tool отличается от других без имени-в-подсказку.
 2. **Подмени annotations у `delete_task`** на `destructiveHint=False`. Host по-прежнему позволит вызвать (это hint, не enforcement) — но UX изменится: никаких предупреждений. Это ровно та дыра в модели доверия, про которую предупреждает спека.
 3. **Поменяй `-> Task` на `-> dict`** в `get_task`. `outputSchema` в `tools/list` станет мизерным (`{}`), `structuredContent` всё равно будет приходить, но без контракта. Сравни с изначальной версией — чем богаче type hints, тем больше получает модель.
-4. **Добавь `tool_id` в REST-запрос параллельно**: открой второй терминал с `uv run python demo.py` — увидишь, что MCP-сервера два независимых, а REST один общий. Это топология корпоративного деплоя в миниатюре.
 
 ## Что разобрали
 
