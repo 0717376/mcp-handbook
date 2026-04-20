@@ -19,8 +19,8 @@
 4. [Hello MCP](#4-hello-mcp) → `examples/01-hello/`
 5. [REST-обёртка](#5-rest-обёртка) → `examples/02-rest-wrapper/`
 6. [Ошибки](#6-ошибки) → `examples/03-errors/`
-7. [Resources](#7-resources) → `examples/04-resources/`
-8. [Prompts](#8-prompts) → `examples/05-prompts/`
+7. [Prompts](#7-prompts) → `examples/04-prompts/`
+8. [Resources](#8-resources) → `examples/05-resources/`
 9. [Progress](#9-progress) → `examples/06-progress/`
 10. [Cancellation](#10-cancellation) → `examples/07-cancellation/`
 11. [Sampling](#11-sampling) → `examples/08-sampling/`
@@ -273,8 +273,8 @@ Batching (массив запросов в одном сообщении) фор
 | Примитив | Где |
 |---|---|
 | **Tools** | [`01-hello`](examples/01-hello/) базовый вызов · [`02-rest-wrapper`](examples/02-rest-wrapper/) схема параметров и content blocks · [`03-errors`](examples/03-errors/) ошибки · [`06-progress`](examples/06-progress/) прогресс · [`07-cancellation`](examples/07-cancellation/) отмена |
-| **Resources** | [`04-resources`](examples/04-resources/) |
-| **Prompts** | [`05-prompts`](examples/05-prompts/) |
+| **Resources** | [`05-resources`](examples/05-resources/) |
+| **Prompts** | [`04-prompts`](examples/04-prompts/) |
 
 ### Три client features
 
@@ -319,17 +319,17 @@ Batching (массив запросов в одном сообщении) фор
 
 Протокольные ошибки (`-32602`) vs бизнес-ошибки (`result` с `isError: true`). Почему это два разных механизма и когда какой.
 
-## 7. Resources
+## 7. Prompts
 
-📁 [`examples/04-resources/`](examples/04-resources/)
-
-Те же задачи, но как resources, а не tools. Subscribe, `notifications/resources/list_changed`, `notifications/resources/updated`. Когда выбирать resource вместо tool.
-
-## 8. Prompts
-
-📁 [`examples/05-prompts/`](examples/05-prompts/)
+📁 [`examples/04-prompts/`](examples/04-prompts/)
 
 Prompt-шаблоны с аргументами. Как они появляются в UI клиента (slash-команды) и чем отличаются от tools.
+
+## 8. Resources
+
+📁 [`examples/05-resources/`](examples/05-resources/)
+
+Те же задачи, но как resources, а не tools. Subscribe, `notifications/resources/list_changed`, `notifications/resources/updated`. Когда выбирать resource вместо tool.
 
 ## 9. Progress
 

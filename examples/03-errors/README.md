@@ -263,4 +263,4 @@ def get_task(task_id: str) -> Task:
 - **Настоящий `-32xxx` в FastMCP ты увидишь редко и почти всегда только `-32602`.** Всё, что нарушает конверт JSON-RPC (unknown method, поломанный `CallToolRequest`, отсутствие required-полей в `initialize`), Pydantic-валидация на входе превращает в один общий `-32602 "Invalid request parameters"` — и в stderr сыплет длинным дампом. `-32601` и `-32700` в коде SDK есть, но в живой сессии не достижимы. Unsupported `protocolVersion` — тоже не ошибка, а тихий downgrade.
 
 
-Дальше — [`04-resources/`](../04-resources/): первая смена примитива. Resources вместо tools, подписки, `notifications/resources/updated`.
+Дальше — [`04-prompts/`](../04-prompts/): prompt-шаблоны и slash-команды. Тот же каркас `list` + `get`, что у tools, но инициативу берёт пользователь, а не модель.
