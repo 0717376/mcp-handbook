@@ -1,0 +1,6 @@
+[project]
+name = "mcp-prompts"
+version = "0.1.0"
+description = "FastMCP server demonstrating prompts — user-controlled slash-command templates"
+requires-python = ">=3.11"
+dependencies = ["mcp>=1.27.0"]
