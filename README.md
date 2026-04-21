@@ -20,7 +20,7 @@
 5. [REST-обёртка](#5-rest-обёртка) → `examples/02-rest-wrapper/`
 6. [Ошибки](#6-ошибки) → `examples/03-errors/`
 7. [Prompts](#7-prompts) → `examples/04-prompts/`
-8. [Resources](#8-resources) → `examples/05-resources/` 🚧 WIP
+8. [Resources](#8-resources) → `examples/05-resources/`
 9. [Notifications](#9-notifications) → `examples/06-notifications/` 🚧 WIP
 10. [Cancellation](#10-cancellation) → `examples/07-cancellation/` 🚧 WIP
 11. [Sampling](#11-sampling) → `examples/08-sampling/` 🚧 WIP
@@ -33,7 +33,7 @@
 - [ContextForge case study](#appendix-contextforge-case-study) → `appendix/contextforge/` 🚧 WIP
 - [A2A case study](#appendix-a2a-case-study) → `appendix/a2a/` 🚧 WIP
 
-> **Статус:** готовы главы 1–7; 8–15 и оба appendix — в работе, содержимое меняется.
+> **Статус:** готовы главы 1–8; 9–15 и оба appendix — в работе, содержимое меняется.
 
 ---
 
@@ -327,11 +327,11 @@ Batching (массив запросов в одном сообщении) фор
 
 Prompt-шаблоны с аргументами. Как они появляются в UI клиента (slash-команды) и чем отличаются от tools.
 
-## 8. Resources 🚧 WIP
+## 8. Resources
 
 📁 [`examples/05-resources/`](examples/05-resources/)
 
-Те же задачи, но как resources, а не tools. Subscribe, `notifications/resources/list_changed`, `notifications/resources/updated`. Когда выбирать resource вместо tool.
+Те же задачи, но как resources, а не tools. Concrete vs template URI, completion, resource-блоки внутри `tools/call` и `prompts/get`. Когда выбирать resource вместо tool.
 
 ## 9. Notifications 🚧 WIP
 
