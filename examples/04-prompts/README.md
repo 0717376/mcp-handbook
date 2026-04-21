@@ -260,7 +260,7 @@ Inspector — дебажный инструмент. Чтобы пощупать
 - Введи команду (подставь свой путь до `04-prompts`):
 
   ```
-  uv run --directory /Users/karpathy/mcp/examples/04-prompts python server.py
+  uv run --directory /path/to/mcp/examples/04-prompts python server.py
   ```
 
 После `Enter` VS Code дополнительно спросит **имя** сервера (ставь `prompts-demo` — под ним будут построены slash-команды) и **scope**: **Workspace** (конфиг ляжет в `.vscode/mcp.json`) или **Global** (в user-профиль, доступно из любого воркспейса).

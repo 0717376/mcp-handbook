@@ -20,18 +20,20 @@
 5. [REST-обёртка](#5-rest-обёртка) → `examples/02-rest-wrapper/`
 6. [Ошибки](#6-ошибки) → `examples/03-errors/`
 7. [Prompts](#7-prompts) → `examples/04-prompts/`
-8. [Resources](#8-resources) → `examples/05-resources/`
-9. [Progress](#9-progress) → `examples/06-progress/`
-10. [Cancellation](#10-cancellation) → `examples/07-cancellation/`
-11. [Sampling](#11-sampling) → `examples/08-sampling/`
-12. [Roots и Elicitation](#12-roots-и-elicitation) → `examples/09-roots-elicitation/`
-13. [Streamable HTTP](#13-streamable-http) → `examples/10-http/`
-14. [OAuth 2.1](#14-oauth-21) → `examples/11-oauth/`
-15. [Security](#15-security) → `examples/12-security/`
+8. [Resources](#8-resources) → `examples/05-resources/` 🚧 WIP
+9. [Progress](#9-progress) → `examples/06-progress/` 🚧 WIP
+10. [Cancellation](#10-cancellation) → `examples/07-cancellation/` 🚧 WIP
+11. [Sampling](#11-sampling) → `examples/08-sampling/` 🚧 WIP
+12. [Roots и Elicitation](#12-roots-и-elicitation) → `examples/09-roots-elicitation/` 🚧 WIP
+13. [Streamable HTTP](#13-streamable-http) → `examples/10-http/` 🚧 WIP
+14. [OAuth 2.1](#14-oauth-21) → `examples/11-oauth/` 🚧 WIP
+15. [Security](#15-security) → `examples/12-security/` 🚧 WIP
 
 **Appendix:**
-- [ContextForge case study](#appendix-contextforge-case-study) → `appendix/contextforge/`
-- [A2A case study](#appendix-a2a-case-study) → `appendix/a2a/`
+- [ContextForge case study](#appendix-contextforge-case-study) → `appendix/contextforge/` 🚧 WIP
+- [A2A case study](#appendix-a2a-case-study) → `appendix/a2a/` 🚧 WIP
+
+> **Статус:** готовы главы 1–7; 8–15 и оба appendix — в работе, содержимое меняется.
 
 ---
 
@@ -325,49 +327,49 @@ Batching (массив запросов в одном сообщении) фор
 
 Prompt-шаблоны с аргументами. Как они появляются в UI клиента (slash-команды) и чем отличаются от tools.
 
-## 8. Resources
+## 8. Resources 🚧 WIP
 
 📁 [`examples/05-resources/`](examples/05-resources/)
 
 Те же задачи, но как resources, а не tools. Subscribe, `notifications/resources/list_changed`, `notifications/resources/updated`. Когда выбирать resource вместо tool.
 
-## 9. Progress
+## 9. Progress 🚧 WIP
 
 📁 [`examples/06-progress/`](examples/06-progress/)
 
 Long-running tool, который шлёт `notifications/progress` через `_meta.progressToken`. Первый реальный bidirectional flow в проекте.
 
-## 10. Cancellation
+## 10. Cancellation 🚧 WIP
 
 📁 [`examples/07-cancellation/`](examples/07-cancellation/)
 
 Отмена tool call через `notifications/cancelled`. Race conditions, graceful shutdown внутри tool'а.
 
-## 11. Sampling
+## 11. Sampling 🚧 WIP
 
 📁 [`examples/08-sampling/`](examples/08-sampling/)
 
 Сервер отправляет request **клиенту**, просит прогнать prompt через LLM. Здесь симметричность протокола из §3 перестаёт быть теорией.
 
-## 12. Roots и Elicitation
+## 12. Roots и Elicitation 🚧 WIP
 
 📁 [`examples/09-roots-elicitation/`](examples/09-roots-elicitation/)
 
 Оставшиеся client-фичи. Сервер видит workspace пользователя и просит у него структурированное уточнение в середине операции.
 
-## 13. Streamable HTTP
+## 13. Streamable HTTP 🚧 WIP
 
 📁 [`examples/10-http/`](examples/10-http/)
 
 Тот же tasks-сервер, но на HTTP. `Mcp-Session-Id`, SSE-upgrade, `MCP-Protocol-Version` header, resumability через `Last-Event-ID`.
 
-## 14. OAuth 2.1
+## 14. OAuth 2.1 🚧 WIP
 
 📁 [`examples/11-oauth/`](examples/11-oauth/)
 
 Добавляем авторизацию к HTTP-серверу. PKCE, dynamic client registration (RFC 7591), discovery через `.well-known/oauth-protected-resource`.
 
-## 15. Security
+## 15. Security 🚧 WIP
 
 📁 [`examples/12-security/`](examples/12-security/)
 
@@ -375,13 +377,13 @@ Prompt injection через tool description, tool shadowing между серв
 
 ---
 
-## Appendix: ContextForge case study
+## Appendix: ContextForge case study 🚧 WIP
 
 📁 [`appendix/contextforge/`](appendix/contextforge/)
 
 Что популярный MCP-gateway теряет при проксировании. Опирается на §3 (capability negotiation, симметрия) и на `examples/08-sampling/` — читается после основной части.
 
-## Appendix: A2A case study
+## Appendix: A2A case study 🚧 WIP
 
 📁 [`appendix/a2a/`](appendix/a2a/)
 
