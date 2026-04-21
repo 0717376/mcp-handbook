@@ -21,7 +21,7 @@
 6. [Ошибки](#6-ошибки) → `examples/03-errors/`
 7. [Prompts](#7-prompts) → `examples/04-prompts/`
 8. [Resources](#8-resources) → `examples/05-resources/` 🚧 WIP
-9. [Progress](#9-progress) → `examples/06-progress/` 🚧 WIP
+9. [Notifications](#9-notifications) → `examples/06-notifications/` 🚧 WIP
 10. [Cancellation](#10-cancellation) → `examples/07-cancellation/` 🚧 WIP
 11. [Sampling](#11-sampling) → `examples/08-sampling/` 🚧 WIP
 12. [Roots и Elicitation](#12-roots-и-elicitation) → `examples/09-roots-elicitation/` 🚧 WIP
@@ -274,7 +274,7 @@ Batching (массив запросов в одном сообщении) фор
 
 | Примитив | Где |
 |---|---|
-| **Tools** | [`01-hello`](examples/01-hello/) базовый вызов · [`02-rest-wrapper`](examples/02-rest-wrapper/) схема параметров и content blocks · [`03-errors`](examples/03-errors/) ошибки · [`06-progress`](examples/06-progress/) прогресс · [`07-cancellation`](examples/07-cancellation/) отмена |
+| **Tools** | [`01-hello`](examples/01-hello/) базовый вызов · [`02-rest-wrapper`](examples/02-rest-wrapper/) схема параметров и content blocks · [`03-errors`](examples/03-errors/) ошибки · [`06-notifications`](examples/06-notifications/) прогресс · [`07-cancellation`](examples/07-cancellation/) отмена |
 | **Resources** | [`05-resources`](examples/05-resources/) |
 | **Prompts** | [`04-prompts`](examples/04-prompts/) |
 
@@ -333,11 +333,11 @@ Prompt-шаблоны с аргументами. Как они появляют�
 
 Те же задачи, но как resources, а не tools. Subscribe, `notifications/resources/list_changed`, `notifications/resources/updated`. Когда выбирать resource вместо tool.
 
-## 9. Progress 🚧 WIP
+## 9. Notifications 🚧 WIP
 
-📁 [`examples/06-progress/`](examples/06-progress/)
+📁 [`examples/06-notifications/`](examples/06-notifications/)
 
-Long-running tool, который шлёт `notifications/progress` через `_meta.progressToken`. Первый реальный bidirectional flow в проекте.
+Server→client канал целиком: `list_changed`, `subscribe`/`updated` для ресурсов, `progress` для долгих tool call'ов, `logging/message` для session-scoped логов. Первый реальный bidirectional flow в проекте.
 
 ## 10. Cancellation 🚧 WIP
 

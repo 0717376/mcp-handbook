@@ -391,7 +391,7 @@ npx @modelcontextprotocol/inspector uv run python server.py
 
 1. **Не пишет envelope-поля** (`jsonrpc`, `id`) и обрезает длинные значения на 100 символов. Это [by design](https://github.com/modelcontextprotocol/inspector/issues/352).
 2. **Не показывает client→server notifications.** History — это только пары request+response. А у notifications нет response. Например, `notifications/initialized` (шаг 2 из demo) клиент отправляет **обязательно** — иначе сервер не перейдёт в operation phase — но в UI её нет нигде.
-3. **Панель `Server Notifications` синтезирует нотификации из stderr.** Inspector читает stderr сервера и каждую строку оборачивает в псевдо-`notifications/message` с `logger: "stdio"`. Это удобно для дебага (видишь серверные логи прямо в UI), но **не настоящие** MCP-notifications — по JSON-RPC ничего такого не летит. Настоящее MCP-логирование работает иначе: сервер должен объявить `logging` capability и слать structured notifications по запросу клиента. Разберём в [`06-progress/`](../06-progress/).
+3. **Панель `Server Notifications` синтезирует нотификации из stderr.** Inspector читает stderr сервера и каждую строку оборачивает в псевдо-`notifications/message` с `logger: "stdio"`. Это удобно для дебага (видишь серверные логи прямо в UI), но **не настоящие** MCP-notifications — по JSON-RPC ничего такого не летит. Настоящее MCP-логирование работает иначе: сервер должен объявить `logging` capability и слать structured notifications по запросу клиента. Разберём в [`06-notifications/`](../06-notifications/).
 
 После прохождения demo эти искажения легко читаются: «А, здесь Inspector спрятал envelope, но в demo я видел, что там `id: 3`». Без demo они путают на ровном месте.
 
