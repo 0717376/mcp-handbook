@@ -1,0 +1,11 @@
+[project]
+name = "mcp-notifications"
+version = "0.1.0"
+description = "FastMCP server demonstrating the four server→client notification shapes: progress, logging, list_changed, subscribe/updated."
+requires-python = ">=3.11"
+dependencies = [
+    "mcp==1.27.0",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "httpx>=0.27.0",
+]
