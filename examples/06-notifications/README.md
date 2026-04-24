@@ -42,7 +42,7 @@
 
 - **`resources.subscribe`** — флаг, что сервер принимает `resources/subscribe` requests на конкретный URI и будет слать `updated` подписчикам. Это единственный случай, когда capability объявляет **дополнительный request-метод** (`resources/subscribe`/`unsubscribe`), а не только notification. В FastMCP 1.27.0 флаг захардкожен `false`, плюс handler'ы не зарегистрированы — масштаб этого пропуска разбираем в шаге 4.
 
-Одна механика — четыре разные задачи. Разбираем их по возрастанию спек-расхождения в FastMCP 1.27.0: **progress** — из коробки, как спека и требует; **logging** — wire работает, но capability не объявлена; **list_changed** — все три флага `false`; **subscribe** — capability `false`, handler'ы отсутствуют. Рамка на все четыре — «спека vs факт»: показываем, что по контракту, и что по проводу, ничего не правим. Тот же подход, что в [03-errors/](../03-errors/), только уже не про ошибки, а про capability negotiation.
+Одна механика — четыре разные задачи. Разбираем их по возрастанию спек-расхождения в FastMCP 1.27.0: **progress** — из коробки, как спека и требует; **logging** — wire работает, но capability не объявлена; **list_changed** — все три флага `false`; **subscribe** — capability `false`, handler'ы отсутствуют. Рамка на все четыре — «спека vs факт»: показываем, что по контракту, и что под капотом, ничего не правим. Тот же подход, что в [03-errors/](../03-errors/), только уже не про ошибки, а про capability negotiation.
 
 ## Топология
 
@@ -198,7 +198,7 @@ async def slow_bulk_import(count: int, ctx: Context) -> str:
 - **Нарратив долгих операций параллельно с `progress`.** `progress` отвечает «где мы» (N/M), логи — «что произошло»: «connected to DB», «skipped row 1247: invalid timestamp», «retry 3/3 failed». Operator-style видимость.
 - **Аудит действий.** Ротация credentials, удаление prod-данных, расходующий tool: сервер рапортует host'у, host пишет в SIEM/compliance-лог. Факт атестован сервером, который выполнил действие, а не клиентом.
 
-### Что на проводе
+### Что под капотом
 
 ```json
 {

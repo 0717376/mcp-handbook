@@ -308,7 +308,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "mcp", specifier = ">=1.27.0" }]
+requires-dist = [{ name = "mcp", specifier = "==1.27.0" }]
 
 [[package]]
 name = "pycparser"

@@ -310,7 +310,7 @@ async def slow_bulk_import(count: int, ctx: Context) -> str:
 
 # ============================================================================
 # ШАГ 2 — logging (notifications/message).
-# Эмитим четыре лог-сообщения, чтобы увидеть формат на проводе. FastMCP шлёт
+# Эмитим четыре лог-сообщения, чтобы увидеть формат под капотом. FastMCP шлёт
 # их в stdout, Inspector (permissive client) показывает в Server Notifications.
 # Но `logging` capability в initialize не объявлена — строгий клиент их
 # проигнорирует. Разрыв обсуждается в README шага 2.

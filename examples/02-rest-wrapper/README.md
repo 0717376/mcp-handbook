@@ -123,7 +123,7 @@ def delete_task(task_id: str) -> str:
 
 **Важное из [спеки](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2025-11-25/schema.ts):** annotations — это именно **hints**, _«not guaranteed to provide a faithful description»_. Злонамеренный сервер может объявить destructive-tool как readOnly. Поэтому host не должен принимать решение о доступе **только** по ним — они инструмент UX (показать «⚠ destructive», попросить подтверждение), а не безопасности. Модель безопасности — в `examples/12-security/`.
 
-## Что там нового по проводам бежит (wire)
+## Что там нового под капотом
 
 ### Каталог tool'ов в ответе на `tools/list`
 

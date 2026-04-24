@@ -132,7 +132,7 @@ ModuleNotFoundError: No module named 'mcp'
 
 В MCP ролей всего две: `user` и `assistant`. Ни `system`, ни `tool` в `PromptMessage.role` не встречается — системные инструкции закладывают либо первым `UserMessage`, либо через поле `instructions` сервера в `initialize`.
 
-## Что там нового по проводам бежит (wire)
+## Что там нового под капотом
 
 Всё, что мы пощупали в Inspector, в wire — это две пары запрос/ответ: один раз `prompts/list` (каталог) и по одному `prompts/get` на каждый клик. Смотрим те же сообщения, что Inspector вытащил в UI, в сыром JSON — через ручной `echo | uv run python server.py`, как в [`03-errors/`](../03-errors/).
 
